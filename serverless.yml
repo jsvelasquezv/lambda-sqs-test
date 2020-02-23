@@ -1,0 +1,23 @@
+service: testLS
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-2
+
+functions:
+  sender:
+    handler: handler.sender
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - TestQueue
+              - Arn
+
+resources:
+  Resources:
+    TestQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: TestQueue
