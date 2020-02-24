@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "0.19.2",
+    "firebase-admin": "^8.9.2"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "2.3.2"
   }
 }

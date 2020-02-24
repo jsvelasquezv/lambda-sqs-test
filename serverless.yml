@@ -1,9 +1,16 @@
 service: testLS
+plugins:
+  - serverless-dotenv-plugin
 
 provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-2
+  environment:
+    urlToRequest: ${env:URL_TO_REQUEST}
+    firebaseSecretsFile: ${env:FIREBASE_SECRETS_FILE}
+    fireStoreUrl: ${env:FIRE_STORE_URL}
+    collectionName: ${env:COLLECTION_NAME}
 
 functions:
   sender:

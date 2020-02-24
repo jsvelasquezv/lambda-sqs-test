@@ -1,24 +1,31 @@
 'use strict';
 const axios = require('axios');
+const firebase = require('firebase-admin');
+const {
+  urlToRequest,
+  firebaseSecretsFile,
+  fireStoreUrl,
+  collectionName
+} = process.env;
+const serviceAccount = require(`./${firebaseSecretsFile}`);
 
-module.exports.sender = async event => {
-  const response = await axios.get('https://testls.requestcatcher.com/test');
-  console.log('response: ', response.data);
-  // return {
-  //   statusCode: 200,
-  //   body: JSON.stringify(
-  //     {
-  //       message: 'Go Serverless v1.0! Your function executed successfully!',
-  //       input: event
-  //     },
-  //     null,
-  //     2
-  //   )
-  // };
+module.exports.sender = async _event => {
+  const id = Math.floor(Math.random() * 100) + 1;
+  const response = await axios.get(`${urlToRequest}/${id}`);
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
+  firebase.initializeApp({
+    credential: firebase.credential.cert(serviceAccount),
+    databaseURL: fireStoreUrl
+  });
+
+  const fireStore = firebase.firestore();
+  await fireStore.collection(collectionName).add({
+    id,
+    name: response.data.name,
+    url: response.data.url
+  });
+
   return {
-    message: 'Go Serverless v1.0! Your function executed successfully!',
-    event
+    message: 'Go Serverless v1.0! Your function executed successfully!'
   };
 };

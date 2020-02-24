@@ -1,6 +1,12 @@
-# package directories
+# Package directories
 node_modules
 jspm_packages
 
 # Serverless directories
 .serverless
+
+# Env
+.env
+
+# Firebase
+firebase-secrets.json
