@@ -8,17 +8,16 @@ const {
   collectionName
 } = process.env;
 const serviceAccount = require(`./${firebaseSecretsFile}`);
+firebase.initializeApp({
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: fireStoreUrl
+});
+const fireStore = firebase.firestore();
 
 module.exports.sender = async _event => {
   const id = Math.floor(Math.random() * 100) + 1;
   const response = await axios.get(`${urlToRequest}/${id}`);
 
-  firebase.initializeApp({
-    credential: firebase.credential.cert(serviceAccount),
-    databaseURL: fireStoreUrl
-  });
-
-  const fireStore = firebase.firestore();
   await fireStore.collection(collectionName).add({
     id,
     name: response.data.name,
